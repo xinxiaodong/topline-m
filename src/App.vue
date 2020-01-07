@@ -2,6 +2,17 @@
   <div id="app">
     <!-- 根路由出口 -->
     <router-view />
+
+    <i class="iconfont icon-Apple"></i>
+
+     <van-icon name="fire-o" />
+
+     <van-icon name="fire-o" />
+
+     <van-icon class-prefix="icon" name="Apple" />
+
+     <div class="box">hello</div>
+
     <van-button type="default">默认按钮</van-button>
     <van-button type="primary">主要按钮</van-button>
     <van-button type="info">信息按钮</van-button>
