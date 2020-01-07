@@ -2,14 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
+// 加载全局样式
+import './styles/index.less'
+
+// 加载注册 vant 组件模块
 import './utils/register-vant.js'
-
-// 加载
-
-// 注册
-// Vue.use(Button)
-// Vue.use(Cell)
-// Vue.use(CellGroup)
 
 Vue.config.productionTip = false
 

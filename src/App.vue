@@ -21,5 +21,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
+// 在style中使用@别名,需要在前面加~
+@import url("~@/styles/variables.less");
 </style>
