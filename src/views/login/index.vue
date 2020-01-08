@@ -12,7 +12,7 @@
       <van-field v-model="user.code" placeholder="请输入验证码">
         <i class="icon icon-mima" slot="left-icon"></i>
         <!-- 倒计时 -->
-        <van-count-down v-if="isCountDownShow" slot="button" :time="1000 * 5" format="ss s" @finish="isCountDownShow = false" />
+        <van-count-down v-if="isCountDownShow" slot="button" :time="1000 * 60" format="ss s" @finish="isCountDownShow = false" />
         <van-button v-else slot="button" size="small" type="primary" round @click="onSendSmsCode">发送验证码</van-button>
       </van-field>
     </van-cell-group>
@@ -70,15 +70,18 @@ export default {
     },
     async onSendSmsCode () {
       try {
-        const { mobile } = this.user
+        // const { mobile } = this.user
         // 1. 验证手机号是否有效
-        // 2. 请求发送短信验证码
-        const res = await getSmsCode(mobile)
-        console.log(res)
-        // 3. 显示倒计时
+        // 2. 显示倒计时
         this.isCountDownShow = true
+
+        // 3. 显示倒计时
+        const res = await getSmsCode(this.user.mobile)
+        console.log(res)
       } catch (err) {
         console.log(err)
+        // 关闭验证码显示
+        this.isCountDownShow = false
         this.$toast('请勿频繁操作')
       }
     }
@@ -96,6 +99,7 @@ export default {
     }
   }
   .van-cell {
+    height: 45px;
     align-items: center;
   }
 }
