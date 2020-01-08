@@ -1,32 +1,18 @@
 <template>
   <div class="login-container">
-     <!-- 导航栏 -->
+    <!-- 导航栏 -->
     <van-nav-bar title="登录" />
     <!-- /导航栏 -->
 
     <!-- 登录表单 -->
     <van-cell-group>
-      <van-field
-      v-model="user.mobile"
-        clearable
-        left-icon="contact"
-        placeholder="请输入手机号"
-      />
-      <van-field
-      v-model="user.code"
-        placeholder="请输入验证码"
-        left-icon="contact"
-        >
-        <van-button
-        slot="button"
-        size="small"
-        type="primary"
-        round
-        >发送验证码</van-button>
+      <van-field v-model="user.mobile" clearable left-icon="contact" placeholder="请输入手机号" />
+      <van-field v-model="user.code" placeholder="请输入验证码" left-icon="contact">
+        <van-button slot="button" size="small" type="primary" round>发送验证码</van-button>
       </van-field>
     </van-cell-group>
 
-    <div  class="login-btn-wrap">
+    <div class="login-btn-wrap">
       <van-button type="info" @click="onLogin">登录</van-button>
     </div>
     <!-- /登录表单 -->
@@ -57,14 +43,32 @@ export default {
       const user = this.user
 
       // 表单验证
+      // 开启登录中 loading
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        message: '登录中...',
+        forbidClick: true // 是否禁止背景点击
+      })
 
       // 请求登录
-      const res = await request({
-        method: 'post',
-        url: '/app/v1_0/authorizations',
-        data: user
-      })
-      console.log(res)
+      try {
+        const res = await request({
+          method: 'POST',
+          url: '/app/v1_0/authorizations',
+          // headers: {
+          // axios 会自动添加该请求头
+          // 'Content-Type': 'application/json'
+          // }, // 请求头参数
+          // params: {}, // Query 查询参数
+          data: user // Body 请求体参数
+        })
+        console.log(res)
+        // 提示成功
+        this.$toast.success('登录成功')
+      } catch (err) {
+        console.log('登录失败', err)
+        this.$toast.fail('登录失败')
+      }
       // 根据后端返回结果执行后续业务处理
     }
   }
