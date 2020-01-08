@@ -4,7 +4,9 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 // 配置路由表
-const routes = []
+const routes = [
+
+]
 
 const router = new VueRouter({
   routes
