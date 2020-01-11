@@ -120,8 +120,10 @@ export default {
 
       // 3. 请求提交
       try {
-        const res = await login(user)
-        console.log(res)
+        const { data } = await login(user)
+        console.log(data)
+        // 将登录成功获取到的用户 token 相关数据存储到 vuex 容器
+        this.$store.commit('setUser', data.data)
 
         // 提示登录成功
         this.$toast.success('登录成功')
