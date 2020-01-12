@@ -33,7 +33,7 @@
       closeable
       close-icon-position="top-left"
     >
-     <channel-edit :user-channels="userChannels" @switch="onChannelSwitch" />
+     <channel-edit :user-channels="userChannels"  :active="active" @switch="onChannelSwitch" />
     </van-popup>
     <!-- /编辑频道 -->
   </div>
