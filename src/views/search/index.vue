@@ -1,7 +1,7 @@
 <template>
   <div class="search-container">
     <!-- 搜索栏 -->
-    <form  class="search-form" action="/">
+    <form class="search-form" action="/">
       <van-search
         v-model="searchContent"
         placeholder="请输入搜索关键词"
@@ -9,27 +9,23 @@
         @search="onSearch"
         @cancel="onCancel"
         @focus="isSearchResultShow = false"
+        @input="onSearchInput"
       />
     </form>
     <!-- /搜索栏 -->
 
-      <!-- 搜索结果 -->
+    <!-- 搜索结果 -->
     <search-result v-if="isSearchResultShow" />
     <!-- /搜索结果 -->
 
     <!-- 联想建议 -->
-    <van-cell-group  v-else-if="searchContent">
-      <van-cell icon="search" title="单元格" />
-      <van-cell icon="search" title="单元格" />
-      <van-cell icon="search" title="单元格" />
-      <van-cell icon="search" title="单元格" />
-      <van-cell icon="search" title="单元格" />
-      <van-cell icon="search" title="单元格" />
+    <van-cell-group v-else-if="searchContent">
+      <van-cell icon="search" :title="item" v-for="(item, index) in suggestions" :key="index" />
     </van-cell-group>
     <!-- /联想建议 -->
 
     <!-- 历史记录 -->
-      <van-cell-group v-else>
+    <van-cell-group v-else>
       <van-cell title="历史记录">
         <van-icon name="delete" />
         <span>全部删除</span>
@@ -53,12 +49,13 @@
       </van-cell>
     </van-cell-group>
     <!-- /历史记录 -->
-
   </div>
 </template>
 
 <script>
 import SearchResult from './components/search-result'
+import { getSuggestions } from '@/api/search'
+
 export default {
   name: 'SearchPage',
   components: {
@@ -68,7 +65,8 @@ export default {
   data () {
     return {
       searchContent: '', // 搜索内容
-      isSearchResultShow: false // 是否展示搜索结果
+      isSearchResultShow: false, // 是否展示搜索结果
+      suggestions: [] // 联想建议
     }
   },
   computed: {},
@@ -85,19 +83,16 @@ export default {
     onCancel () {
       console.log('onCancel')
     },
-    onLoad () {
-      // 异步更新数据
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1)
-        }
-        // 加载状态结束
-        this.loading = false
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true
-        }
-      }, 500)
+    async onSearchInput () {
+      const searchContent = this.searchContent
+      if (!searchContent) {
+        return
+      }
+      // 1. 请求获取数据
+      const { data } = await getSuggestions(searchContent)
+      // 2. 将数据添加到组件实例中
+      this.suggestions = data.data.options
+      // 3. 模板绑定
     }
   }
 }
