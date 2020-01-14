@@ -58,6 +58,7 @@
 <script>
 import SearchResult from './components/search-result'
 import { getSuggestions } from '@/api/search'
+import { debounce } from 'lodash'
 
 export default {
   name: 'SearchPage',
@@ -96,8 +97,8 @@ export default {
     onCancel () {
       console.log('onCancel')
     },
-    async onSearchInput () {
-      const searchContent = this.searchContent
+    onSearchInput: debounce(async function () {
+      const searchContent = await this.searchContent
       if (!searchContent) {
         return
       }
@@ -106,7 +107,7 @@ export default {
       // 2. 将数据添加到组件实例中
       this.suggestions = data.data.options
       // 3. 模板绑定
-    },
+    }, 200),
     highlight (str) {
       const searchContent = this.searchContent
       // /searchContent/ 正则表达式中的一切内容都会当做字符串使用
