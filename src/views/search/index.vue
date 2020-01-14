@@ -8,7 +8,7 @@
         show-action
         background="#3296fa"
         @search="onSearch(searchContent)"
-        @cancel="onCancel"
+        @cancel="$router.back()"
         @focus="isSearchResultShow = false"
         @input="onSearchInput"
       />
@@ -98,9 +98,6 @@ export default {
 
       // 展示搜索结果
       this.isSearchResultShow = true
-    },
-    onCancel () {
-      console.log('onCancel')
     },
     onSearchInput: debounce(async function () {
       const searchContent = await this.searchContent
