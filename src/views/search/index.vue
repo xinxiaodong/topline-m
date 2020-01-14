@@ -16,7 +16,7 @@
     <!-- /搜索栏 -->
 
     <!-- 搜索结果 -->
-    <search-result v-if="isSearchResultShow" />
+    <search-result v-if="isSearchResultShow" :q="searchContent" />
     <!-- /搜索结果 -->
 
     <!-- 联想建议 -->
