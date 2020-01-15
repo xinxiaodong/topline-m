@@ -18,7 +18,7 @@
           <van-image class="avatar" round fit="cover" :src="article.aut_photo" />
           <div class="text">
              <p class="name">{{ article.aut_name }}</p>
-            <p class="time">{{ article.pubdate }}</p>
+            <p class="time">{{ article.pubdate  | relativeTime  }}</p>
           </div>
         </div>
         <van-button v-if="!user || article.aut_id !== user.id" class="follow-btn" :type="article.is_followed ? 'default' : 'info'" size="small" round :loading="isFollowLoading" @click="onFollow">{{ article.is_followed ? '已关注' : '+ 关注' }}</van-button>
