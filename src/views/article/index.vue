@@ -21,7 +21,7 @@
             <p class="time">{{ article.pubdate }}</p>
           </div>
         </div>
-        <!-- <van-button v-if="!$store.state.user || article.aut_id !== $store.state.user.id" class="follow-btn" :type="article.is_followed ? 'default' : 'info'" size="small" round>{{ article.is_followed ? '已关注' : '+ 关注' }}</van-button> -->
+        <van-button v-if="!user || article.aut_id !== user.id" class="follow-btn" :type="article.is_followed ? 'default' : 'info'" size="small" round>{{ article.is_followed ? '已关注' : '+ 关注' }}</van-button>
       </div>
         <div class="markdown-body" v-html="article.content"></div>
     </div>
@@ -49,6 +49,7 @@
 
 <script>
 import { getArticleById, addCollect, deleteCollect, addLike, deleteLike } from '@/api/article'
+import { mapState } from 'vuex'
 export default {
   name: 'ArticlePage',
   components: {},
@@ -64,7 +65,11 @@ export default {
       loading: true // 文章加载中的 loading 状态
     }
   },
-  computed: {},
+  computed: {
+    // mapState 方法返回一个对象，对象中就是映射过来的容器中的数据成员
+    // ... 操作符就是把一个对象展开，混入当前对象中
+    ...mapState(['user'])
+  },
   watch: {},
   created () {
     this.loadArticle()
