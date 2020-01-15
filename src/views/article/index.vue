@@ -17,17 +17,25 @@
         <div class="base-info">
           <van-image class="avatar" round fit="cover" :src="article.aut_photo" />
           <div class="text">
-             <p class="name">{{ article.aut_name }}</p>
-            <p class="time">{{ article.pubdate | relativeTime  }}</p>
+            <p class="name">{{ article.aut_name }}</p>
+            <p class="time">{{ article.pubdate | relativeTime }}</p>
           </div>
         </div>
-        <van-button v-if="!user || article.aut_id !== user.id" class="follow-btn" :type="article.is_followed ? 'default' : 'info'" size="small" round :loading="isFollowLoading" @click="onFollow">{{ article.is_followed ? '已关注' : '+ 关注' }}</van-button>
+        <van-button
+          v-if="!user || article.aut_id !== user.id"
+          class="follow-btn"
+          :type="article.is_followed ? 'default' : 'info'"
+          size="small"
+          round
+          :loading="isFollowLoading"
+          @click="onFollow"
+        >{{ article.is_followed ? '已关注' : '+ 关注' }}</van-button>
       </div>
-         <!-- 文章内容 -->
-        <div class="markdown-body" v-html="article.content"></div>
-          <!-- /文章内容 -->
-         <!-- 文章评论 -->
-      <article-comment />
+      <!-- 文章内容 -->
+      <div class="markdown-body" v-html="article.content"></div>
+      <!-- /文章内容 -->
+      <!-- 文章评论 -->
+      <article-comment :article-id="articleId" />
       <!-- /文章评论 -->
     </div>
     <!-- /文章详情 -->
@@ -45,7 +53,11 @@
       <van-button class="write-btn" type="default" round size="small">写评论</van-button>
       <van-icon class="comment-icon" name="comment-o" info="9" />
       <van-icon color="orange" :name="article.is_collected ? 'star' : 'star-o'" @click="onCollect" />
-      <van-icon color="#e5645f"  :name="article.attitude === 1 ? 'good-job' : 'good-job-o'"  @click="onLike" />
+      <van-icon
+        color="#e5645f"
+        :name="article.attitude === 1 ? 'good-job' : 'good-job-o'"
+        @click="onLike"
+      />
       <van-icon class="share-icon" name="share" />
     </div>
     <!-- /底部区域 -->
@@ -53,7 +65,13 @@
 </template>
 
 <script>
-import { getArticleById, addCollect, deleteCollect, addLike, deleteLike } from '@/api/article'
+import {
+  getArticleById,
+  addCollect,
+  deleteCollect,
+  addLike,
+  deleteLike
+} from '@/api/article'
 import { addFollow, deleteFollow } from '@/api/user'
 import ArticleComment from './components/article-comment'
 import { mapState } from 'vuex'
@@ -161,7 +179,6 @@ export default {
       this.isFollowLoading = false
     }
   }
-
 }
 </script>
 
@@ -179,7 +196,7 @@ export default {
       margin: 0;
       padding-top: 24px;
       font-size: 20px;
-      color: #3A3A3A;
+      color: #3a3a3a;
     }
     .author-wrap {
       padding: 20px 0;
