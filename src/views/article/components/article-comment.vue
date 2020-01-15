@@ -1,16 +1,19 @@
 <template>
   <div class="article-comments">
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-      <van-cell v-for="(item, index) in list" :key="index" :title="item.content" />
+      <comment-item v-for="(item, index) in list" :key="index" :comment="item" />
     </van-list>
   </div>
 </template>
 
 <script>
 import { getComments } from '@/api/comment'
+import CommentItem from './comment-item'
 export default {
   name: 'ArticleComment',
-  components: {},
+  components: {
+    CommentItem
+  },
   props: {
     articleId: {
       type: [Number, String, Object],
