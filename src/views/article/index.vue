@@ -40,7 +40,7 @@
       <van-button class="write-btn" type="default" round size="small">写评论</van-button>
       <van-icon class="comment-icon" name="comment-o" info="9" />
       <van-icon color="orange" :name="article.is_collected ? 'star' : 'star-o'" @click="onCollect" />
-      <van-icon color="#e5645f" name="good-job" />
+      <van-icon color="#e5645f"  :name="article.attitude === 1 ? 'good-job' : 'good-job-o'" />
       <van-icon class="share-icon" name="share" />
     </div>
     <!-- /底部区域 -->
