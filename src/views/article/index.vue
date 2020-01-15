@@ -21,7 +21,7 @@
             <p class="time">{{ article.pubdate }}</p>
           </div>
         </div>
-        <van-button v-if="!user || article.aut_id !== user.id" class="follow-btn" :type="article.is_followed ? 'default' : 'info'" size="small" round>{{ article.is_followed ? '已关注' : '+ 关注' }}</van-button>
+        <van-button v-if="!user || article.aut_id !== user.id" class="follow-btn" :type="article.is_followed ? 'default' : 'info'" size="small" round :loading="isFollowLoading" @click="onFollow">{{ article.is_followed ? '已关注' : '+ 关注' }}</van-button>
       </div>
         <div class="markdown-body" v-html="article.content"></div>
     </div>
@@ -49,6 +49,7 @@
 
 <script>
 import { getArticleById, addCollect, deleteCollect, addLike, deleteLike } from '@/api/article'
+import { addFollow, deleteFollow } from '@/api/user'
 import { mapState } from 'vuex'
 export default {
   name: 'ArticlePage',
@@ -62,7 +63,8 @@ export default {
   data () {
     return {
       article: {}, // 文章详情
-      loading: true // 文章加载中的 loading 状态
+      loading: true, // 文章加载中的 loading 状态
+      isFollowLoading: false // 关注按钮的 loading 状态
     }
   },
   computed: {
@@ -131,8 +133,27 @@ export default {
         console.log(err)
         this.$toast.fail('操作失败')
       }
+    },
+    async onFollow () {
+      this.isFollowLoading = true
+      try {
+        const authorId = this.article.aut_id
+        // 如果已关注，则取消关注
+        if (this.article.is_followed) {
+          await deleteFollow(authorId)
+        } else {
+          // 添加关注
+          await addFollow(authorId)
+        }
+        this.article.is_followed = !this.article.is_followed
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('操作失败')
+      }
+      this.isFollowLoading = false
     }
   }
+
 }
 </script>
 
