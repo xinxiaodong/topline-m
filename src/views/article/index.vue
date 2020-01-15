@@ -50,7 +50,7 @@
 
     <!-- 底部区域 -->
     <div class="footer">
-      <van-button class="write-btn" type="default" round size="small">写评论</van-button>
+      <van-button class="write-btn" type="default" round size="small"  @click="isPostShow = true">写评论</van-button>
       <van-icon class="comment-icon" name="comment-o" info="9" />
       <van-icon color="orange" :name="article.is_collected ? 'star' : 'star-o'" @click="onCollect" />
       <van-icon
@@ -61,6 +61,14 @@
       <van-icon class="share-icon" name="share" />
     </div>
     <!-- /底部区域 -->
+
+     <!-- 发布文章评论 -->
+    <van-popup
+      v-model="isPostShow"
+      position="bottom"
+      :style="{ height: '20%' }"
+    />
+    <!-- /发布文章评论 -->
   </div>
 </template>
 
@@ -90,7 +98,8 @@ export default {
     return {
       article: {}, // 文章详情
       loading: true, // 文章加载中的 loading 状态
-      isFollowLoading: false // 关注按钮的 loading 状态
+      isFollowLoading: false, // 关注按钮的 loading 状态
+      isPostShow: false // 发布评论的弹层显示状态
     }
   },
   computed: {
