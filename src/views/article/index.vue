@@ -21,7 +21,7 @@
             <p class="time">{{ article.pubdate }}</p>
           </div>
         </div>
-        <van-button class="follow-btn" type="info" size="small" round>+ 关注</van-button>
+        <van-button class="follow-btn" :type="article.is_followed ? 'default' : 'info'" size="small" round>{{ article.is_followed ? '已关注' : '+ 关注' }}</van-button>
       </div>
         <div class="markdown-body" v-html="article.content"></div>
     </div>
@@ -40,7 +40,7 @@
       <van-button class="write-btn" type="default" round size="small">写评论</van-button>
       <van-icon class="comment-icon" name="comment-o" info="9" />
       <van-icon color="orange" :name="article.is_collected ? 'star' : 'star-o'" @click="onCollect" />
-      <van-icon color="#e5645f"  :name="article.attitude === 1 ? 'good-job' : 'good-job-o'" />
+      <van-icon color="#e5645f"  :name="article.attitude === 1 ? 'good-job' : 'good-job-o'"  @click="onLike" />
       <van-icon class="share-icon" name="share" />
     </div>
     <!-- /底部区域 -->
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { getArticleById, addCollect, deleteCollect } from '@/api/article'
+import { getArticleById, addCollect, deleteCollect, addLike, deleteLike } from '@/api/article'
 export default {
   name: 'ArticlePage',
   components: {},
@@ -98,6 +98,29 @@ export default {
           await addCollect(this.articleId)
           this.article.is_collected = true
           this.$toast.success('收藏成功')
+        }
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('操作失败')
+      }
+    },
+    async onLike () {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        message: '操作中...',
+        forbidClick: true // 是否禁止背景点击
+      })
+      try {
+        // 如果已赞，则取消点赞
+        if (this.article.attitude === 1) {
+          await deleteLike(this.articleId)
+          this.article.attitude = -1
+          this.$toast.success('取消点赞')
+        } else {
+          // 点赞
+          await addLike(this.articleId)
+          this.article.attitude = 1
+          this.$toast.success('点赞成功')
         }
       } catch (err) {
         console.log(err)
