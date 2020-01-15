@@ -50,7 +50,7 @@
 
     <!-- 底部区域 -->
     <div class="footer">
-      <van-button class="write-btn" type="default" round size="small"  @click="isPostShow = true">写评论</van-button>
+      <van-button class="write-btn" type="default" round size="small" @click="isPostShow = true">写评论</van-button>
       <van-icon class="comment-icon" name="comment-o" info="9" />
       <van-icon color="orange" :name="article.is_collected ? 'star' : 'star-o'" @click="onCollect" />
       <van-icon
@@ -62,12 +62,8 @@
     </div>
     <!-- /底部区域 -->
 
-     <!-- 发布文章评论 -->
-    <van-popup
-      v-model="isPostShow"
-      position="bottom"
-      :style="{ height: '20%' }"
-    />
+    <!-- 发布文章评论 -->
+    <van-popup v-model="isPostShow" position="bottom"> <post-comment /></van-popup>
     <!-- /发布文章评论 -->
   </div>
 </template>
@@ -82,11 +78,13 @@ import {
 } from '@/api/article'
 import { addFollow, deleteFollow } from '@/api/user'
 import ArticleComment from './components/article-comment'
+import PostComment from './components/post-comment'
 import { mapState } from 'vuex'
 export default {
   name: 'ArticlePage',
   components: {
-    ArticleComment
+    ArticleComment,
+    PostComment
   },
   props: {
     articleId: {
