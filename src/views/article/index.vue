@@ -18,12 +18,17 @@
           <van-image class="avatar" round fit="cover" :src="article.aut_photo" />
           <div class="text">
              <p class="name">{{ article.aut_name }}</p>
-            <p class="time">{{ article.pubdate  | relativeTime  }}</p>
+            <p class="time">{{ article.pubdate | relativeTime  }}</p>
           </div>
         </div>
         <van-button v-if="!user || article.aut_id !== user.id" class="follow-btn" :type="article.is_followed ? 'default' : 'info'" size="small" round :loading="isFollowLoading" @click="onFollow">{{ article.is_followed ? '已关注' : '+ 关注' }}</van-button>
       </div>
+         <!-- 文章内容 -->
         <div class="markdown-body" v-html="article.content"></div>
+          <!-- /文章内容 -->
+         <!-- 文章评论 -->
+      <article-comment />
+      <!-- /文章评论 -->
     </div>
     <!-- /文章详情 -->
 
@@ -50,10 +55,13 @@
 <script>
 import { getArticleById, addCollect, deleteCollect, addLike, deleteLike } from '@/api/article'
 import { addFollow, deleteFollow } from '@/api/user'
+import ArticleComment from './components/article-comment'
 import { mapState } from 'vuex'
 export default {
   name: 'ArticlePage',
-  components: {},
+  components: {
+    ArticleComment
+  },
   props: {
     articleId: {
       type: String,
