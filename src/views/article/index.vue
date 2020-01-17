@@ -78,7 +78,7 @@
       position="bottom"
       style="height: 90%"
     >
-      评论回复
+      <comment-reply :comment="currentComment" />
     </van-popup>
     <!-- /评论回复 -->
   </div>
@@ -95,13 +95,15 @@ import {
 import { addFollow, deleteFollow } from '@/api/user'
 import ArticleComment from './components/article-comment'
 import PostComment from './components/post-comment'
+import CommentReply from './components/comment-reply'
 import { mapState } from 'vuex'
 import { addComment } from '@/api/comment'
 export default {
   name: 'ArticlePage',
   components: {
     ArticleComment,
-    PostComment
+    PostComment,
+    CommentReply
   },
   props: {
     articleId: {
