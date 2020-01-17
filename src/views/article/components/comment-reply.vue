@@ -1,6 +1,6 @@
 <template>
   <div class="comment-reply">
-    <van-nav-bar title="0 条回复">
+       <van-nav-bar :title="`${comment.reply_count} 条回复`">
       <van-icon slot="left" name="cross" />
     </van-nav-bar>
     <!-- 当前评论 -->
@@ -21,7 +21,7 @@
 
     <!-- 发布回复 -->
     <van-popup v-model="isPostShow" position="bottom">
-      <post-comment v-model="postMessage" @click-reply="onPost" />
+       <post-comment v-model="postMessage" @click-post="onPost" />
     </van-popup>
     <!-- /发布回复 -->
   </div>
@@ -29,7 +29,7 @@
 
 <script>
 import CommentItem from './comment-item'
-import { getComments } from '@/api/comment'
+import { getComments, addComment } from '@/api/comment'
 import PostComment from './post-comment'
 export default {
   name: 'CommentReply',
@@ -40,6 +40,10 @@ export default {
   props: {
     comment: {
       type: Object,
+      required: true
+    },
+    articleId: {
+      type: [Object, Number, String],
       required: true
     }
   },
@@ -79,8 +83,31 @@ export default {
         this.finished = true // 没有数据了，结束
       }
     },
-    onPost () {
-      console.log('onPost')
+    async onPost () {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        message: '发布中...',
+        forbidClick: true // 是否禁止背景点击
+      })
+      try {
+        const { data } = await addComment({
+          target: this.comment.com_id.toString(),
+          content: this.postMessage,
+          art_id: this.articleId
+        })
+        // 清空文本框
+        this.postMessage = ''
+        // 关闭弹层
+        this.isPostShow = false
+        // 将数据添加到列表顶部
+        this.list.unshift(data.data.new_obj)
+        // 更新回复的总数量
+        this.comment.reply_count++
+        this.$toast.success('发布成功')
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('发布失败')
+      }
     }
   }
 }
