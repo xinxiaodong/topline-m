@@ -7,31 +7,35 @@
     <comment-item :comment="comment" />
     <!-- /当前评论 -->
     <van-cell title="所有回复" />
-      <!-- 回复列表 -->
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-    >
-      <comment-item
-        :comment="comment"
-        v-for="(comment, index) in list"
-        :key="index"
-      />
+    <!-- 回复列表 -->
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+      <comment-item :comment="comment" v-for="(comment, index) in list" :key="index" />
     </van-list>
     <!-- /回复列表 -->
+    <!-- 底部区域 -->
+    <div class="footer">
+      <van-button class="write-btn" type="default" round size="small" @click="isPostShow = true">写评论</van-button>
+      <van-icon color="#e5645f" name="good-job" />
+    </div>
+    <!-- /底部区域 -->
+
+    <!-- 发布回复 -->
+    <van-popup v-model="isPostShow" position="bottom">
+      <post-comment v-model="postMessage" @click-reply="onPost" />
+    </van-popup>
+    <!-- /发布回复 -->
   </div>
 </template>
 
 <script>
 import CommentItem from './comment-item'
 import { getComments } from '@/api/comment'
-
+import PostComment from './post-comment'
 export default {
   name: 'CommentReply',
   components: {
-    CommentItem
+    CommentItem,
+    PostComment
   },
   props: {
     comment: {
@@ -45,7 +49,9 @@ export default {
       loading: false,
       finished: false,
       offset: null,
-      limit: 20
+      limit: 20,
+      isPostShow: false,
+      postMessage: ''
     }
   },
   computed: {},
@@ -72,10 +78,32 @@ export default {
       } else {
         this.finished = true // 没有数据了，结束
       }
+    },
+    onPost () {
+      console.log('onPost')
     }
   }
-
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 44px;
+  border-top: 1px solid #d8d8d8;
+  background-color: #fff;
+  .write-btn {
+    width: 160px;
+  }
+  .van-icon {
+    font-size: 20px;
+  }
+}
+</style>
