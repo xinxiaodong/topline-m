@@ -1,7 +1,7 @@
 <template>
   <div class="article-comments">
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-      <comment-item v-for="(item, index) in list" :key="index" :comment="item" />
+      <comment-item v-for="(item, index) in list" :key="index" :comment="item" @click-reply="$emit('click-reply', $event)" />
     </van-list>
   </div>
 </template>

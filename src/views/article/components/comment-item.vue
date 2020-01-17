@@ -1,12 +1,7 @@
 <template>
   <van-cell class="comment-item">
     <!-- 评论作者头像 -->
-    <van-image
-      slot="icon"
-      class="avatar"
-      round
-      :src="comment.aut_photo"
-    />
+    <van-image slot="icon" class="avatar" round :src="comment.aut_photo" />
     <!-- 评论作者头像 -->
 
     <!-- 评论作者名字 -->
@@ -26,6 +21,7 @@
         <van-button
           size="mini"
           type="default"
+          @click="$emit('click-reply', comment)"
         >回复 {{ comment.reply_count }}</van-button>
       </p>
     </div>
@@ -53,8 +49,7 @@ export default {
     return {}
   },
   computed: {},
-  watch: {
-  },
+  watch: {},
   created () {},
   methods: {}
 }
